@@ -5,7 +5,7 @@ window.onload = function () {
       if (data.success) {
         const items = data.items
         items.forEach((item) => {
-          addItemToList(item.item, item.id)
+          addItemToList(item.item, item.id, item.imagePath)
         })
       }
     })
@@ -25,18 +25,23 @@ document.getElementById('groceryForm').onsubmit = function (event) {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          addItemToList(newItem, data.id)
+          addItemToList(newItem, data.id, '/public/images/' + newItem + '.png')
           document.getElementById('newItem').value = '' // Clear input after adding
         }
       })
   }
 }
 
-function addItemToList(item, id) {
+function addItemToList(item, id, imagePath) {
   const ul = document.getElementById('itemList')
   const li = document.createElement('li')
   li.textContent = item
   li.id = 'item-' + id
+
+  const img = document.createElement('img')
+  img.src = imagePath
+  img.alt = item
+  img.style.height = '50px' // Set image size as needed
 
   const deleteButton = document.createElement('button')
   deleteButton.className = 'btn btn-danger btn-sm' // Bootstrap classes for small, red button
@@ -58,6 +63,7 @@ function addItemToList(item, id) {
       })
   }
 
+  li.appendChild(img)
   li.appendChild(deleteButton)
   ul.appendChild(li)
 }

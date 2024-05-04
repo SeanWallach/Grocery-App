@@ -1,0 +1,24 @@
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: rgb(43, 43, 43);
+  color: #9c9c9c;
+  text-align: center;
+}
+
+ul {
+  padding-top: 50px;
+}
+
+li {
+  margin-top: 10px;
+}
+
+button {
+  margin-left: 20px;
+}

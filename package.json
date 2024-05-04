@@ -1,0 +1,21 @@
+{
+  "name": "grocery-app",
+  "version": "1.0.0",
+  "description": "Simple Grocery List Application",
+  "main": "app.js",
+  "scripts": {
+    "run": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "Sean Wallach",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.8",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "prettier": "^3.2.5"
+  }
+}

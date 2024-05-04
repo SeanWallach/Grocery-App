@@ -65,7 +65,7 @@ app.post('/add-item', async (req, res) => {
       // Request Image generation from Dalle-2
       const response = await openai.images.generate({
         model: 'dall-e-2',
-        prompt: item.toString(),
+        prompt: 'a cartoon image of ' + item.toString(),
         n: 1,
         size: '256x256',
       })

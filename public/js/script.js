@@ -34,9 +34,14 @@ document.getElementById('groceryForm').onsubmit = function (event) {
 
 function addItemToList(item, id, imagePath) {
   const ul = document.getElementById('itemList')
-  const li = document.createElement('li')
-  li.textContent = item
-  li.id = 'item-' + id
+  const div = document.createElement('div')
+  div.id = 'item-' + id
+  div.style.cssText =
+    'display:flex;justify-content:space-evenly;align-items:center;padding: 10px;margin:10px;border-radius:14px;border:white;border:1px solid;background-color:#2d2e2e;'
+
+  const p = document.createElement('p')
+  p.textContent = item
+  p.style.cssText = 'color:white;'
 
   const img = document.createElement('img')
   img.src = imagePath
@@ -63,7 +68,8 @@ function addItemToList(item, id, imagePath) {
       })
   }
 
-  li.appendChild(img)
-  li.appendChild(deleteButton)
-  ul.appendChild(li)
+  div.appendChild(img)
+  div.appendChild(p)
+  div.appendChild(deleteButton)
+  ul.appendChild(div)
 }

@@ -6,24 +6,15 @@ body {
   align-items: center;
   height: 100vh;
   margin: 0;
-  background-color: rgb(43, 43, 43);
-  color: #9c9c9c;
+  background-color: #716969;
+  color: #bcabae;
   text-align: center;
 }
 
 ul {
-  padding-top: 50px;
+  padding-top: 30px;
 }
 
 li {
   margin-top: 10px;
-}
-
-button {
-  margin-left: 20px;
-}
-
-image {
-  /* padding: 5px; */
-  /* margin-left: 20px; */
 }

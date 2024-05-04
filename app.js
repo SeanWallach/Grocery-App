@@ -50,55 +50,64 @@ app.get('/get-items', (req, res) => {
 // User adds item
 app.post('/add-item', async (req, res) => {
   const { item } = req.body
-  try {
-    const response = await openai.images.generate({
-      model: 'dall-e-2',
-      prompt: item.toString(),
-      n: 1,
-      size: '512x512',
-    })
+  console.log('Item received: ', item)
 
-    imageUrl = response.data[0].url
+  const relativeFilePath = path.join('images', `${item}.png`)
+  const directoryPath = path.join(__dirname + '/public/images')
 
-    // Download image from URL
-    const responseImage = await axios({
-      url: imageUrl,
-      responseType: 'arraybuffer',
-    })
+  const imageFiles = fs
+    .readdirSync(directoryPath)
+    .filter((file) => fs.statSync(path.join(directoryPath, file)).isFile())
 
-    const imagePath = path.join('images', `${item}.png`)
-    console.log(imagePath)
+  console.log(imageFiles)
+  if (!imageFiles.includes(item + '.png')) {
+    try {
+      // Request Image generation from Dalle-2
+      const response = await openai.images.generate({
+        model: 'dall-e-2',
+        prompt: item.toString(),
+        n: 1,
+        size: '256x256',
+      })
 
-    fs.writeFile(
-      __dirname + '/public/' + imagePath,
-      responseImage.data,
-      'binary',
-      function (err) {
-        if (err) {
-          console.log(err)
-          return res.json({ success: false })
-        }
-        console.log('File saved.')
-      },
-    )
+      // Download image from URL
+      const responseImage = await axios({
+        url: response.data[0].url,
+        responseType: 'arraybuffer',
+      })
 
-    const id = items.length
-    const newItem = { id, item, imagePath }
-    items.push(newItem)
-
-    fs.writeFile('items.json', JSON.stringify(items, null, 2), (err) => {
-      if (err) {
-        console.error(err)
-        return res.json({ success: false })
-      }
-      res.json({ success: true, id: newItem.id, imagePath: newItem.imagePath })
-    })
-  } catch (error) {
-    console.error('Error generating image:', error)
-    return res
-      .status(500)
-      .json({ success: false, message: 'Failed to generate image' })
+      // Write image to disk
+      fs.writeFile(
+        __dirname + '/public/' + relativeFilePath,
+        responseImage.data,
+        'binary',
+        function (err) {
+          if (err) {
+            console.log(err)
+            return res.json({ success: false })
+          }
+          console.log('File saved.')
+        },
+      )
+    } catch (error) {
+      console.error('Error generating image:', error)
+      return res
+        .status(500)
+        .json({ success: false, message: 'Failed to generate image' })
+    }
   }
+
+  const id = items.length
+  const newItem = { id, item, imagePath: relativeFilePath }
+  items.push(newItem)
+
+  fs.writeFile('items.json', JSON.stringify(items, null, 2), (err) => {
+    if (err) {
+      console.error('Error writing file:', err)
+      return res.json({ success: false })
+    }
+    res.json({ success: true, id: newItem.id, imagePath: newItem.imagePath })
+  })
 })
 
 // User Deletes item
@@ -113,7 +122,7 @@ app.post('/delete-item', (req, res) => {
     items = items.filter((item) => item.id !== id)
     fs.writeFile('items.json', JSON.stringify(items, null, 2), (err) => {
       if (err) {
-        console.error(err)
+        console.error('Error deleting file:', err)
         return res.json({ success: false })
       }
       currentTime = Date()

@@ -4,6 +4,7 @@ const { OpenAI } = require('openai')
 const axios = require('axios')
 const path = require('path')
 
+require('dotenv').config()
 const app = express()
 app.use(express.static(path.join(__dirname, 'public')))
 
@@ -19,7 +20,7 @@ app.listen(PORT, () => {
 })
 
 const openai = new OpenAI({
-  apiKey: 'sk-proj-2bnDqQtWjVV2AvuD7YKyT3BlbkFJoXtuqsXv75d4bpzTGEVn', // Should hide this
+  apiKey: process.env.OPENAI_API_KEY,
 })
 
 // =========================================================================

@@ -5,16 +5,9 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  margin: 0;
   background-color: #716969;
   color: #bcabae;
   text-align: center;
-}
-
-ul {
-  padding-top: 30px;
-}
-
-li {
-  margin-top: 10px;
+  width: 800px;
+  margin: auto;
 }

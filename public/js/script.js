@@ -33,15 +33,15 @@ document.getElementById('groceryForm').onsubmit = function (event) {
 }
 
 function addItemToList(item, id, imagePath) {
-  const ul = document.getElementById('itemList')
+  const container = document.getElementById('itemList')
   const div = document.createElement('div')
   div.id = 'item-' + id
   div.style.cssText =
-    'display:flex;justify-content:space-evenly;align-items:center;padding: 10px;margin:10px;border-radius:14px;border:white;border:1px solid;background-color:#2d2e2e;'
+    'display:flex;justify-content:space-between;align-items:center;padding:10px;margin:10px;border-radius:14px;border:white;border:1px solid;background-color:#2d2e2e;max-width:250px;min-width:210px;'
 
   const p = document.createElement('p')
   p.textContent = item
-  p.style.cssText = 'color:white;'
+  p.style.cssText = 'color:white;margin-top:12px'
 
   const img = document.createElement('img')
   img.src = imagePath
@@ -71,5 +71,5 @@ function addItemToList(item, id, imagePath) {
   div.appendChild(img)
   div.appendChild(p)
   div.appendChild(deleteButton)
-  ul.appendChild(div)
+  container.appendChild(div)
 }

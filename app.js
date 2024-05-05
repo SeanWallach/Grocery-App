@@ -3,6 +3,7 @@ const fs = require('fs')
 const { OpenAI } = require('openai')
 const axios = require('axios')
 const path = require('path')
+const nodemailer = require('nodemailer')
 
 // =========================================================================
 // SETUP
@@ -15,7 +16,6 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json()) // For parsing application/json
 
 let currentTime
-let items
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
@@ -59,12 +59,14 @@ app.post('/add-item', async (req, res) => {
   console.log('Item received: ', item)
 
   const relativeFilePath = path.join('images', `${item}.png`)
-  const directoryPath = path.join(__dirname + '/public/images')
+  const imagesDirectoryPath = path.join(__dirname + '/public/images')
 
   // Collect all image files
   const imageFiles = fs
-    .readdirSync(directoryPath)
-    .filter((file) => fs.statSync(path.join(directoryPath, file)).isFile())
+    .readdirSync(imagesDirectoryPath)
+    .filter((file) =>
+      fs.statSync(path.join(imagesDirectoryPath, file)).isFile(),
+    )
 
   // If the image does not already exist, query Dalle-2 via openai to create a new one
   if (!imageFiles.includes(item + '.png')) {
@@ -112,15 +114,28 @@ app.post('/add-item', async (req, res) => {
   // construct json object for item
   const id = Math.floor(Math.random() * 100).toString() + item // serializer
   const newItem = { id, item, imagePath: relativeFilePath }
-  items.push(newItem)
+  let items
 
-  // write new item to json file
-  fs.writeFile('items.json', JSON.stringify(items, null, 2), (err) => {
+  getItems((err, data) => {
     if (err) {
-      console.error('Error writing file:', err)
-      return res.json({ success: false })
+      console.error(err)
+    } else {
+      items = data
+      items.push(newItem)
+
+      // write new item to json file
+      fs.writeFile('items.json', JSON.stringify(items, null, 2), (err) => {
+        if (err) {
+          console.error('Error writing file:', err)
+          return res.json({ success: false })
+        }
+        res.json({
+          success: true,
+          id: newItem.id,
+          imagePath: newItem.imagePath,
+        })
+      })
     }
-    res.json({ success: true, id: newItem.id, imagePath: newItem.imagePath })
   })
 })
 
@@ -160,6 +175,20 @@ app.get('/get-meal-plan', async (req, res) => {
         const response = await createMealPlan(ingredients)
         const responseContents = response.choices[0].message.content
         console.log('Meal Plan Received')
+
+        fs.writeFile(
+          'mealplan.txt',
+          responseContents,
+          'binary',
+          function (err) {
+            if (err) {
+              console.log(err)
+              return res.json({ success: false })
+            }
+            console.log('Meal plan file saved.')
+          },
+        )
+
         res.json({ responseContents })
       } catch (error) {
         console.error('Failed to create meal plan:', error.message)
@@ -180,6 +209,18 @@ function getItems(callback) {
   })
 }
 
+// Gets items from items.json addds to them to an array
+function getMealPlan(callback) {
+  fs.readFile('mealplan.txt', (err, data) => {
+    if (err) {
+      console.error(err)
+      return callback(err, null)
+    }
+    items = data.toString()
+    return callback(null, items)
+  })
+}
+
 async function createMealPlan(ingredients) {
   try {
     const response = await openai.chat.completions.create({
@@ -188,15 +229,71 @@ async function createMealPlan(ingredients) {
         {
           role: 'system',
           content:
-            'Assuming access to spice, staple ingredients (such as pasta noodles, rice, sugar, salt, etc), create a 5 day high-protein meal plan with the given ingredients. Include snack/desert options at the end. Suggest ingredients that may be missing from the grocery list. Only output in HTML format, assuming the response content will be directly inserted into a div. ' +
+            'Assuming access to spice, staple ingredients (such as pasta noodles, rice, sugar, salt, etc), create a 5 day high-protein meal plan with the given ingredients. Include snack/desert options at the end. Suggest ingredients that may be missing from the grocery list. Only output in HTML format, assuming the response content will be directly inserted into a div. Do not include ```html before/after the response. Ingredients:' +
             ingredients,
         },
       ],
     })
-
     return response
   } catch (error) {
     console.log('Failed to creat emeal plan: ' + error.message)
   }
   return
 }
+
+app.get('/email-grocery-list', async (req, res) => {
+  console.log('Grocery list requested')
+  getItems(async (err, items) => {
+    if (err) {
+      // Handle error
+      console.error('Failed to load items:', err.message)
+      res.status(500).json({ success: false, message: 'Failed to load items' })
+    } else {
+      try {
+        const ingredients = items.map((obj) => obj.item).join(', ')
+
+        // Set up transporter
+        let transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: process.env.EMAIL,
+            pass: process.env.PASS,
+          },
+        })
+
+        getMealPlan((err, data) => {
+          if (err) {
+            console.log('Err getting meal plan: ', err)
+          } else {
+            // Email options
+            let mailOptions = {
+              from: 'process.env.EMAIL', // Sender address
+              to: process.env.EMAIL_RECIPENTS, // List of recipients
+              subject: 'Grocery List', // Subject line
+              text: `Here is your grocery list: ${ingredients} Here is the meal plan: ${data}`, // Plain text body
+              html: `<p>Here is your grocery list: <b>${ingredients}</b> <br> Here is the meal plan: ${data}</p>`, // HTML body content
+            }
+
+            // Send email
+            transporter.sendMail(mailOptions, function (error, info) {
+              if (error) {
+                console.log('Error sending email:', error)
+                res
+                  .status(500)
+                  .json({ success: false, message: 'Failed to send email' })
+              } else {
+                console.log('Email sent: ' + info.response)
+                res.json({ success: true, message: 'Email sent successfully' })
+              }
+            })
+          }
+        })
+      } catch (error) {
+        console.error('Failed to create email:', error.message)
+        res
+          .status(500)
+          .json({ success: false, message: 'Failed to process items' })
+      }
+    }
+  })
+})

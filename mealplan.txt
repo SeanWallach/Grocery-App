@@ -1,0 +1,59 @@
+<div>
+    <h1>5-Day High-Protein Meal Plan</h1>
+    <p>This meal plan includes high-protein meals for breakfast, lunch, dinner, and snacks, using the ingredients provided. Additional seasoning and staple ingredients like oil and spices are assumed to be present.</p>
+
+    <h2>Day 1</h2>
+    <ul>
+        <li><strong>Breakfast:</strong> Scrambled eggs with shredded cheese, bacon, and diced tomatoes on a bagel.</li>
+        <li><strong>Lunch:</strong> Chicken salad with Greek yogurt, diced celery, apple slices, and feta cheese, served on sandwich bread.</li>
+        <li><strong>Dinner:</strong> Grilled chicken breast with steamed broccoli and carrots, seasoned with lemon and herbs.</li>
+    </ul>
+
+    <h2>Day 2</h2>
+    <ul>
+        <li><strong>Breakfast:</strong> Yogurt with granola, strawberries, and blueberries.</li>
+        <li><strong>Lunch:</strong> Beef and vegetable stir-fry with onion, asparagus, and carrots over rice. Use soy sauce if available.</li>
+        <li><strong>Dinner:</strong> Baked sausages with roasted cauliflower and a side of pasta sauce.</li>
+    </ul>
+
+    <h2>Day 3</h2>
+    <ul>
+        <li><strong>Breakfast:</strong> Omelette with sausages, shredded cheese, and diced tomatoes.</li>
+        <li><strong>Lunch:</strong> Tuna salad sandwich using canned soup mixed with mayo on sandwich bread, with slices of cucumber.</li>
+        <li><strong>Dinner:</strong> Beef meatballs in tomato paste sauce served over pasta with a side salad of cucumber, feta cheese, and onion.</li>
+    </ul>
+
+    <h2>Day 4</h2>
+    <ul>
+        <li><strong>Breakfast:</strong> Bagel with peanut butter and banana slices.</li>
+        <li><strong>Lunch:</strong> Chicken and vegetable soup made with chicken broth, carrots, celery, and onion.</li>
+        <li><strong>Dinner:</strong> Grilled lemon chicken with a side of steamed asparagus and mashed potatoes.</li>
+    </ul>
+
+    <h2>Day 5</h2>
+    <ul>
+        <li><strong>Breakfast:</strong> French toast made with sandwich bread, topped with yogurt and frozen berries.</li>
+        <li><strong>Lunch:</strong> Deli meat and cheese sandwich with lettuce, tomato, and ketchup, with a side of carrot sticks.</li>
+        <li><strong>Dinner:</strong> Baked ground beef casserole with broccoli, tomatoes, and shredded cheese.</li>
+    </ul>
+
+    <h3>Snacks/Desert Options</h3>
+    <ul>
+        <li>Granola bars</li>
+        <li>Fruit cups or fresh fruit slices</li>
+        <li>Celery sticks with peanut butter</li>
+        <li>Crackers with cheese slices</li>
+        <li>Homemade frozen yogurt with berries and a sprinkle of chocolate chips</li>
+    </ul>
+
+    <h3>Suggested Missing Ingredients</h3>
+    <ul>
+        <li>Olive oil or cooking spray</li>
+        <li>Soy sauce</li>
+        <li>Mayonnaise</li>
+        <li>Various spices (e.g., pepper, garlic powder, Italian seasoning)</li>
+        <li>Fresh herbs (if preferred)</li>
+        <li>Butter or margarine (for cooking and baking)</li>
+    </ul>
+
+</div>

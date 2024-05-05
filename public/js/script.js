@@ -57,7 +57,7 @@ function addItemToList(item, id, imagePath) {
 
   div.id = 'item-' + id
   div.style.cssText =
-    'display:flex;justify-content:space-between;align-items:center;padding:10px;margin:10px;border-radius:14px;border:white;border:1px solid;background-color:#4e5166;max-width:250px;min-width:210px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);'
+    'display:flex;justify-content:space-between;align-items:center;padding:10px;margin:10px;border-radius:14px;border:#b9b7a7;border:1px solid;background-color:#4e5166;max-width:250px;min-width:210px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);'
 
   p.textContent = item
   p.style.cssText = 'color:white;margin-top:12px'
@@ -99,7 +99,22 @@ function fetchMealPlan() {
     })
     .then((data) => {
       console.log('Browser received meal plan.')
+      document
+        .getElementById('mealPlanResponseDiv')
+        .style.setProperty('padding', '40px')
+
       document.getElementById('mealPlanResponse').innerHTML =
         data.responseContents
+    })
+}
+
+function sendEmail() {
+  console.log('Email Copy Requested')
+  fetch('/email-grocery-list')
+    .then((response) => {
+      return response.json()
+    })
+    .then((data) => {
+      console.log('Server sent email.')
     })
 }

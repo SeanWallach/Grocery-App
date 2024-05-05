@@ -26,7 +26,6 @@ body {
   background-color: #4e5166;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   width: 700px;
-  padding: 10px;
   max-height: 900px;
   overflow-x: hidden;
   overflow-y: auto;

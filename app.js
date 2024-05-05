@@ -39,17 +39,15 @@ app.get('/', (req, res) => {
 })
 
 // On Page Reload
-app.get('/get-items', (req, res) => {
-  console.log('User connected')
-  fs.readFile('items.json', (err, data) => {
+app.get('/get-items', async (req, res) => {
+  console.log('User connected.')
+
+  getItems(async (err, data) => {
     if (err) {
-      console.error(err)
-      return res
-        .status(500)
-        .json({ success: false, message: 'Failed to load items.' })
+      console.log(err)
+    } else {
+      res.json({ success: true, items })
     }
-    items = JSON.parse(data.toString() || '[]')
-    res.json({ success: true, items })
   })
 })
 
@@ -161,8 +159,9 @@ app.post('/delete-item', (req, res) => {
   })
 })
 
+// User Requests Meal Plan generation
 app.get('/get-meal-plan', async (req, res) => {
-  console.log('Meal plan requested')
+  console.log('Meal plan requested.')
   getItems(async (err, items) => {
     if (err) {
       // Handle error
@@ -229,7 +228,7 @@ async function createMealPlan(ingredients) {
         {
           role: 'system',
           content:
-            'Assuming access to spice, staple ingredients (such as pasta noodles, rice, sugar, salt, etc), create a 5 day high-protein meal plan with the given ingredients. Include snack/desert options at the end. Suggest ingredients that may be missing from the grocery list. Only output in HTML format, assuming the response content will be directly inserted into a div. Do not include ```html before/after the response. Ingredients:' +
+            'Rearrange and categorize these ingredients together by category. Assuming access to spice, staple ingredients (pasta noodles, rice, sugar, salt, etc.), create a 5 day high-protein meal plan with the given ingredients. Include snack/desert options at the end. Suggest ingredients that may be missing from the grocery list. Format: Only output in HTML format, assuming the response content will be directly inserted into a div. Do not include ```html before/after the response. Ingredients:' +
             ingredients,
         },
       ],

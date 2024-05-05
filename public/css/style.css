@@ -8,6 +8,14 @@ body {
   background-color: #716969;
   color: #bcabae;
   text-align: center;
-  width: 800px;
+  /* width: 800px; */
   margin: auto;
+}
+
+#mealPlanResponse {
+  /* max-width: 1000px; */
+}
+
+#mealPlanBtn {
+  width: 150px;
 }

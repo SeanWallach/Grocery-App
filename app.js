@@ -270,8 +270,8 @@ app.get('/email-grocery-list', async (req, res) => {
               from: 'process.env.EMAIL', // Sender address
               to: process.env.EMAIL_RECIPENTS, // List of recipients
               subject: 'Grocery List', // Subject line
-              text: `Here is your grocery list: ${ingredients} Here is the meal plan: ${data}`, // Plain text body
-              html: `<p>Here is your grocery list: <b>${ingredients}</b> <br> Here is the meal plan: ${data}</p>`, // HTML body content
+              text: `Here is your grocery list: ${ingredients}   ${data}`, // Plain text body
+              html: `<p>Here is your grocery list: <br><br><b>${ingredients}</b> <br><br>${data}</p>`, // HTML body content
             }
 
             // Send email

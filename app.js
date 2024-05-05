@@ -73,7 +73,7 @@ app.post('/add-item', async (req, res) => {
       // Request Image generation from Dalle-2
       const response = await openai.images.generate({
         model: 'dall-e-3',
-        prompt: 'a cartoon image of ' + item.toString(),
+        prompt: 'a goofy, simplistic drawing of ' + item.toString(),
         n: 1,
         size: '1024x1024',
       })
@@ -188,7 +188,8 @@ async function createMealPlan(ingredients) {
         {
           role: 'system',
           content:
-            'Create a meal plan with the given ingredients: ' + ingredients,
+            'Assuming access to spice, staple ingredients (such as pasta noodles, rice, sugar, salt, etc), create a 5 day high-protein meal plan with the given ingredients. Include snack/desert options at the end. Suggest ingredients that may be missing from the grocery list. Only output in HTML format, assuming the response content will be directly inserted into a div. ' +
+            ingredients,
         },
       ],
     })

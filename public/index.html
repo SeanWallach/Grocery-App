@@ -23,7 +23,15 @@
       <br />
 
       <div style="display: flex; flex-direction: row">
-        <div style="display: flex; flex-direction: column">
+        <!-- Meal plan column -->
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-right: 20px;
+          "
+        >
           <button
             type="button"
             onclick="fetchMealPlan()"
@@ -33,59 +41,40 @@
             Get meal plan
           </button>
 
-          <div
-            style="
-              border-radius: 14px;
-              background-color: darkslategray;
-              box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-              width: 700px;
-              padding: 10px;
-              margin-right: 50px;
-              overflow-x: hidden;
-              overflow-y: auto;
-            "
-          >
+          <div id="mealPlanResponseDiv">
             <span id="mealPlanResponse"></span>
           </div>
         </div>
 
-        <div style="display: flex; flex-direction: column">
-          <div
-            style="
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              width: 370px;
-              margin: auto;
-            "
-          >
-            <form id="groceryForm" style="margin-bottom: 10px">
-              <div
-                style="
-                  display: flex;
-                  align-items: center;
-                  justify-content: space-between;
-                  width: 270px;
-                  margin: auto;
-                "
+        <!-- Ingredients items column -->
+        <div style="display: flex; flex-direction: column; align-items: center">
+          <form id="groceryForm" style="margin-bottom: 10px">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                margin: auto;
+              "
+            >
+              <input
+                type="text"
+                id="newItem"
+                class="form-control"
+                placeholder="Add new item"
+                style="margin-right: 20px; width: 200px"
+              />
+              <button
+                type="submit"
+                class="btn btn-primary"
+                style="margin-right: 20px; width: 150px"
               >
-                <input
-                  type="text"
-                  id="newItem"
-                  class="form-control"
-                  placeholder="Add new item"
-                  style="margin-right: 20px"
-                />
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  style="margin-right: 20px"
-                >
-                  Add Item
-                </button>
-              </div>
-            </form>
-          </div>
+                Add Item
+              </button>
+            </div>
+          </form>
+
           <div
             id="itemList"
             style="

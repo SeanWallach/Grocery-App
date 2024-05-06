@@ -296,3 +296,9 @@ app.get('/email-grocery-list', async (req, res) => {
     }
   })
 })
+
+app.get('/clear-all', async (req, res) => {
+  console.log('Clearing all items.')
+  fs.writeFileSync('items.json', '[]')
+  res.json({ success: true })
+})

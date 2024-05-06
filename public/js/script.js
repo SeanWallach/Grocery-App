@@ -41,6 +41,7 @@ document.getElementById('groceryForm').onsubmit = function (event) {
   }
 }
 
+// User adds item
 function addItemToList(item, id, imagePath) {
   const div = document.createElement('div')
   const p = document.createElement('p')
@@ -92,7 +93,7 @@ function addItemToList(item, id, imagePath) {
   document.getElementById('newItemSpinner').style.visibility = 'hidden'
 }
 
-// Requests meal plan from server and waits for response. Adds meal plan to span upon response
+// User requests meal plan from server and waits for response. Adds meal plan to span upon response
 function fetchMealPlan() {
   console.log('Meal plan requested')
   document.getElementById('mealPlanSpinner').style.visibility = 'visible'
@@ -123,4 +124,22 @@ function sendEmail() {
     .then((data) => {
       console.log('Server sent email.')
     })
+}
+
+function clearAll() {
+  const itemList = document.getElementById('itemList').children
+
+  if (itemList.length > 0) {
+    // Convert HTMLCollection to array to use forEach
+    var elementsArray = Array.from(itemList)
+
+    elementsArray.forEach(function (element) {
+      // Remove each element
+      element.remove()
+    })
+
+    fetch('/clear-all').then((response) => {
+      console.log('items deleted')
+    })
+  }
 }

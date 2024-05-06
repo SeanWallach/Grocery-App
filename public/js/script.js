@@ -1,4 +1,6 @@
 window.onload = function () {
+  document.getElementById('mealPlanSpinner').style.visibility = 'hidden'
+  document.getElementById('newItemSpinner').style.visibility = 'hidden'
   fetch('/get-items')
     .then((response) => response.json())
     .then((data) => {
@@ -14,21 +16,28 @@ window.onload = function () {
 document.getElementById('groceryForm').onsubmit = function (event) {
   event.preventDefault()
   const newItem = document.getElementById('newItem').value
-  if (newItem) {
-    fetch('/add-item', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ item: newItem }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          addItemToList(newItem, data.id, '/public/images/' + newItem + '.png')
-          document.getElementById('newItem').value = '' // Clear input after adding
-        }
+  if (newItem !== '') {
+    document.getElementById('newItemSpinner').style.visibility = 'visible'
+    if (newItem) {
+      fetch('/add-item', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ item: newItem }),
       })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            addItemToList(
+              newItem,
+              data.id,
+              '/public/images/' + newItem + '.png',
+            )
+            document.getElementById('newItem').value = '' // Clear input after adding
+          }
+        })
+    }
   }
 }
 
@@ -40,24 +49,19 @@ function addItemToList(item, id, imagePath) {
   const img = new Image()
   img.style.height = '50px' // Set image size as needed
   img.alt = 'Image of ' + item
-  imagePath = imagePath.trim()
+  img.id = id + '-image'
+  img.src = '/images/PLACEHOLDER.png'
+  //   imagePath = imagePath.trim()
   div.appendChild(img)
 
   // Set image source after defining onload and onerror
-  //   img.onload = function () {
-  // div.appendChild(img) // Append the loaded image to the list item if it loads successfully
-  // img.src = imagePath
-  // div.obje
-  //   }
-
-  img.onerror = function () {
-    console.error('Failed to load image at ' + imagePath)
-    img.src = '/images/PLACEHOLDER.png' // Use a placeholder image in case of an error
+  img.onload = function () {
+    img.src = '/images/' + item + '.png'
   }
 
   div.id = 'item-' + id
   div.style.cssText =
-    'display:flex;justify-content:space-between;align-items:center;padding:10px;margin:10px;border-radius:14px;border:#b9b7a7;border:1px solid;background-color:#4e5166;max-width:250px;min-width:210px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);'
+    'transition: opacity 2s ease-in-out;display:flex;justify-content:space-between;align-items:center;padding:10px;margin:10px;border-radius:14px;border:#b9b7a7;border:1px solid;background-color:#4e5166;max-width:250px;min-width:210px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);'
 
   p.textContent = item
   p.style.cssText = 'color:white;margin-top:12px'
@@ -85,14 +89,13 @@ function addItemToList(item, id, imagePath) {
   div.appendChild(p)
   div.appendChild(deleteButton)
   container.appendChild(div)
-
-  // Assign the src last to ensure onload and onerror are set up
-  img.src = imagePath
+  document.getElementById('newItemSpinner').style.visibility = 'hidden'
 }
 
 // Requests meal plan from server and waits for response. Adds meal plan to span upon response
 function fetchMealPlan() {
   console.log('Meal plan requested')
+  document.getElementById('mealPlanSpinner').style.visibility = 'visible'
   fetch('/get-meal-plan')
     .then((response) => {
       return response.json()
@@ -105,9 +108,12 @@ function fetchMealPlan() {
 
       document.getElementById('mealPlanResponse').innerHTML =
         data.responseContents
+
+      document.getElementById('mealPlanSpinner').style.visibility = 'hidden'
     })
 }
 
+// User requrests email
 function sendEmail() {
   console.log('Email Copy Requested')
   fetch('/email-grocery-list')

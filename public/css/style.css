@@ -1,19 +1,29 @@
 body {
+  margin-top: 50px;
   font-family: Arial, sans-serif;
   line-height: 1.6;
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
   height: 100vh;
-  background-color: #7c90a0;
-  color: #b9b7a7;
+  background-color: darkslategrey;
+  /* background-color: #7c90a0; */
+  /* background: linear-gradient(
+    125deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(242, 61, 165, 1) 0%,
+    rgba(38, 0, 255, 1) 100%
+  ); */
+  color: black;
   text-align: center;
-  /* width: 800px; */
   margin: auto;
 }
 
-#mealPlanResponse {
-  /* max-width: 1000px; */
+header {
+  position: fixed;
+  top: 0;
+  margin: auto;
+  margin-top: 20px;
 }
 
 #mealPlanBtn {
@@ -30,4 +40,5 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   text-align: left;
+  margin-bottom: 30px;
 }

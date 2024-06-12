@@ -2,7 +2,7 @@
 
 Add and delete your grocery items from a list.
 
-Queries OpenAI API to generate grocery item images, and attache image to respective items in the list.
+Queries OpenAI API to generate grocery item images, and attaches image to respective items in the list.
 
 Request a Meal Plan - querries the OpenAI API GPT-4 text model to organize ingredients and generate a meal plan
 
